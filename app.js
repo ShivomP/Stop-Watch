@@ -1,27 +1,36 @@
-const timerMillis = document.querySelector(".timer__milliseconds")
-const timerSeconds = document.querySelector(".timer__seconds")
-const timerMinutes = document.querySelector(".timer__minutes")
+const millisTimer = document.querySelector(".timer__milliseconds")
+const secondsTimer = document.querySelector(".timer__seconds")
+const minutesTimer = document.querySelector(".timer__minutes")
+const startButton = document.querySelector(".stopwatch__start")
+const stopButton = document.querySelector(".stopwatch__stop")
+const resetButton = document.querySelector(".stopwatch__reset")
 
 let startTime
 let cancelId
 let savedTime = 0
 
 function startTimer(){
+    startButton.disabled = true
+    stopButton.disabled = false
+    resetButton.disabled = false
     startTime = Date.now()
     cancelId = requestAnimationFrame(updateTimer)
 }
 
 function stopTimer(){
-    savedTime = savedTime + Date.now() - startTime
+    startButton.disabled = false
+    stopButton.disabled = true
+    resetButton.disabled = false
+    savedTime += Date.now() - startTime
     cancelAnimationFrame(cancelId)
 }
 
 function resetTimer(){
-    savedTime = 0
     startTime = Date.now()
-    timerMillis.innerHTML = "000"
-    timerSeconds.innerHTML = "00"
-    timerMinutes.innerHTML = "00"
+    savedTime = 0
+    millisTimer.innerHTML = "000"
+    secondsTimer.innerHTML = "00"
+    minutesTimer.innerHTML = "00"
 }
 
 function updateTimer(){
@@ -42,10 +51,10 @@ function updateTimer(){
     if(minutesText.toString().length < 2){
         minutesText = minutesText.toString().padStart(2, "0")
     }
-    
-    timerMillis.innerHTML = millisText
-    timerSeconds.innerHTML = secondsText
-    timerMinutes.innerHTML = minutesText
+
+    millisTimer.innerHTML = millisText
+    secondsTimer.innerHTML = secondsText
+    minutesTimer.innerHTML = minutesText
 
     cancelId = requestAnimationFrame(updateTimer)
 }
